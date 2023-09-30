@@ -1,5 +1,11 @@
 #include "validate.h"
 
+/// <summary>
+/// функция содержит другие функции для проверкии
+/// выражения на корректность ввода
+/// </summary>
+/// <param name="expression"></param>
+/// <param name="error"></param>
 void main_validate(string expression, error_list* error)
 {
 	if (expression.length() > 255) *error = LENGTH;
@@ -7,6 +13,12 @@ void main_validate(string expression, error_list* error)
 	if (*error == OK) count_brackets(expression, error);
 }
 
+/// <summary>
+/// проверка на содержание в выражении
+/// посторонних символов
+/// </summary>
+/// <param name="expression"></param>
+/// <param name="error"></param>
 void other_symbols(string expression, error_list *error)
 {
 	string sample = "1234567890.-+*/^sincotaqrmdlg()";
@@ -16,6 +28,11 @@ void other_symbols(string expression, error_list *error)
 	}
 }
 
+/// <summary>
+/// корректность положения скобок
+/// </summary>
+/// <param name="expression"></param>
+/// <param name="error"></param>
 void count_brackets(string expression, error_list* error)
 {
 	int bracket_flag = 0;
