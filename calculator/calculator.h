@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <corecrt_math_defines.h>
+#include <iomanip>
+
+#include "validate.h"
 
 using namespace std;
 

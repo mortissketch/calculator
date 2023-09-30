@@ -21,12 +21,20 @@ int main()
         string expression;
         double result;
         vector<lexeme> lex;
+        error_list error = OK;
 
         // Ввод выражения
         input_expression(&expression);
 
+        // Проверка выражения на корректность ввода
+        main_validate(expression, &error);
+
         if (expression == "stop") flag = 0;
-        else {
+        else if (error != OK) {
+            cout << "error type: " << error << endl;
+        }
+        else 
+        {
 
             // работа с выражением, подсчет
             change_templates(&expression);
@@ -38,11 +46,6 @@ int main()
         }
 
     }
-
-
-
-
-
     return 0;
 }
 
@@ -64,7 +67,7 @@ void greeting()
 /// <param name="expression"></param>
 void input_expression(string* expression)
 {
-    cout << "Please enter your expression : ";
+    cout << "\nPlease enter your expression : ";
     cin >> *expression;
 }
 
@@ -74,7 +77,7 @@ void input_expression(string* expression)
 /// <param name="result"></param>
 void output_result(double result)
 {
-    cout << "\nYour answer is: " << result << endl;
+    cout << "Your answer is: " << setprecision(15) <<result << endl;
 }
 
 /// <summary>
@@ -224,7 +227,7 @@ void calculating(vector<lexeme> expression, double* result)
             else
                 unary_calc(&expression, &index);
         }
-        index++;;
+        index++;
     }
     *result = expression[0].number;
 }
@@ -239,9 +242,9 @@ void binary_calc(vector<lexeme>* expression, size_t* index)
     lexeme result;
     result.operation = 'Z';
     result.number = binary_num_num((*expression)[*index - 2].number, (*expression)[*index - 1].number, (*expression)[*index].operation);
-    expression->erase(expression->begin() + (*index - 2), expression->begin() + (*index + 1));
+    (*expression)[*index - 2] = result;
+    expression->erase(expression->begin() + (*index - 1), expression->begin() + (*index + 1));
     *index = 0;
-    expression->insert(expression->begin(), result);
 }
 
 /// <summary>
@@ -320,7 +323,7 @@ void unary_calc(vector<lexeme>* expression, size_t* index)
     lexeme result;
     result.operation = 'Z';
     result.number = unary_num((*expression)[*index - 1].number, (*expression)[*index].operation);
-    expression->erase(expression->begin() + (*index - 1), expression->begin() + (*index + 1));
+    (*expression)[*index - 1] = result;
+    expression->erase(expression->begin() + (*index), expression->begin() + (*index+1));
     *index = 0;
-    expression->insert(expression->begin(), result);
 }
